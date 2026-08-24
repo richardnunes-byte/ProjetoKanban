@@ -20,7 +20,8 @@ body {
 }
 
 button,
-input {
+input,
+textarea {
     font: inherit;
 }
 
@@ -59,6 +60,18 @@ button {
     font-size: 24px;
 }
 
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-logo {
+    width: 38px;
+    height: 38px;
+    object-fit: contain;
+}
+
 .board-date {
     margin: 0;
     color: var(--muted);
@@ -84,7 +97,8 @@ button {
     gap: 8px;
 }
 
-.task-form input {
+.task-form input,
+.task-form textarea {
     width: 100%;
     min-width: 120px;
     padding: 10px 12px;
@@ -94,7 +108,12 @@ button {
     outline: 0;
 }
 
-.task-form input:focus {
+.task-form textarea {
+    resize: vertical;
+}
+
+.task-form input:focus,
+.task-form textarea:focus {
     border-color: var(--teal);
 }
 
@@ -216,8 +235,15 @@ button {
     border: 1px dashed var(--teal);
 }
 
+.task-list.drag-over {
+    min-height: 130px;
+    outline: 2px dashed var(--teal);
+    outline-offset: 4px;
+}
+
 .task-card-top {
     justify-content: space-between;
+    position: relative;
 }
 
 .card-menu {
@@ -225,6 +251,31 @@ button {
     background: transparent;
     border: 0;
     letter-spacing: 2px;
+}
+
+.card-actions {
+    position: absolute;
+    top: 24px;
+    right: 0;
+    z-index: 2;
+    padding: 4px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+}
+
+.card-actions button {
+    padding: 7px 10px;
+    color: #a85045;
+    background: transparent;
+    border: 0;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.card-actions button:hover {
+    background: #f8e2df;
 }
 
 .priority,

@@ -5,6 +5,8 @@ const listaandamento = document.querySelector('.progress-column .task-list');
 const listaconcluidas = document.querySelector('.done-column .task-list');
 const totaltarefas = document.querySelector('.board-total');
 const mensagemvazia = document.querySelector('.empty-state');
+const campodescricao = document.querySelector('#task-description');
+let statusEscolhido = 'todo';
 
 function atualizarcontadores() {
     const colunas = document.querySelectorAll('.kanban-column');
@@ -43,20 +45,6 @@ function pegarLista(status) {
     return listaafazer;
 }
 
-function concluirTarefa(cartao) {
-    cartao.dataset.status = 'done';
-    cartao.classList.add('completed-task');
-
-    const botao = cartao.querySelector('.card-menu');
-
-    botao.textContent = 'Concluida';
-    botao.disabled = true;
-
-    listaconcluidas.appendChild(cartao);
-
-    atualizarcontadores();
-}
-
 function moverTarefa(cartao, novoStatus) {
     cartao.dataset.status = novoStatus;
 
@@ -67,47 +55,110 @@ function moverTarefa(cartao, novoStatus) {
     atualizarcontadores();
 }
 
+document.querySelectorAll('.task-list').forEach(function (lista) {
+    lista.addEventListener('dragstart', function (evento) {
+        const cartao = evento.target.closest('.task-card');
+
+        if (!cartao) {
+            return;
+        }
+
+        cartao.classList.add('dragging');
+        evento.dataTransfer.effectAllowed = 'move';
+        evento.dataTransfer.setData('text/plain', 'task');
+    });
+
+    lista.addEventListener('dragend', function (evento) {
+        evento.target.closest('.task-card')?.classList.remove('dragging');
+        document.querySelectorAll('.task-list').forEach(function (outraLista) {
+            outraLista.classList.remove('drag-over');
+        });
+    });
+
+    lista.addEventListener('dragover', function (evento) {
+        evento.preventDefault();
+        lista.classList.add('drag-over');
+    });
+
+    lista.addEventListener('dragleave', function (evento) {
+        if (!lista.contains(evento.relatedTarget)) {
+            lista.classList.remove('drag-over');
+        }
+    });
+
+    lista.addEventListener('drop', function (evento) {
+        evento.preventDefault();
+        const cartao = document.querySelector('.task-card.dragging');
+        const coluna = lista.closest('.kanban-column');
+
+        if (cartao && coluna) {
+            moverTarefa(cartao, coluna.dataset.status);
+        }
+
+        lista.classList.remove('drag-over');
+    });
+});
+
 function prepararTarefa(cartao) {
     const botao = cartao.querySelector('.card-menu');
     const status = cartao.dataset.status;
 
     if (status === 'todo') {
         cartao.classList.remove('completed-task');
-
-        botao.disabled = false;
-        botao.textContent = 'Em andamento';
-        botao.style.letterSpacing = 'normal';
-        botao.setAttribute('aria-label', 'Mover tarefa para em andamento');
-
-        botao.onclick = function () {
-            moverTarefa(cartao, 'progress');
-        };
-
     } else if (status === 'progress') {
         cartao.classList.remove('completed-task');
-
-        botao.disabled = false;
-        botao.textContent = 'Concluir';
-        botao.style.letterSpacing = 'normal';
-        botao.setAttribute('aria-label', 'Marcar tarefa como concluída');
-
-        botao.onclick = function () {
-            moverTarefa(cartao, 'done');
-        };
-
     } else {
         cartao.classList.add('completed-task');
-
-        botao.textContent = 'Concluída';
-        botao.style.letterSpacing = 'normal';
-        botao.disabled = true;
-        botao.onclick = null;
     }
+
+    botao.textContent = '•••';
+    botao.disabled = false;
+    botao.setAttribute('aria-label', 'Opções da tarefa');
 }
+
+function fecharMenus() {
+    document.querySelectorAll('.card-actions').forEach(function (menu) {
+        menu.remove();
+    });
+}
+
+document.addEventListener('click', function (evento) {
+    const botaoMenu = evento.target.closest('.card-menu');
+
+    if (botaoMenu) {
+        evento.stopPropagation();
+        const cartao = botaoMenu.closest('.task-card');
+        const menuExistente = cartao.querySelector('.card-actions');
+
+        fecharMenus();
+
+        if (!menuExistente) {
+            const menu = document.createElement('div');
+            const excluir = document.createElement('button');
+
+            menu.className = 'card-actions';
+            excluir.type = 'button';
+            excluir.textContent = 'Excluir tarefa';
+            excluir.addEventListener('click', function () {
+                cartao.remove();
+                atualizarcontadores();
+            });
+            menu.appendChild(excluir);
+            botaoMenu.closest('.task-card-top').appendChild(menu);
+        }
+
+        return;
+    }
+
+    if (!evento.target.closest('.card-actions')) {
+        fecharMenus();
+    }
+});
 formulario.addEventListener('submit', function (evento) {
     evento.preventDefault();
 
     const nomeTarefa = campotarefa.value.trim();
+    const descricaoTarefa = campodescricao.value.trim();
 
     if (nomeTarefa === '') {
         alert('Digite o nome da tarefa antes de adicionar.');
@@ -117,7 +168,8 @@ formulario.addEventListener('submit', function (evento) {
     const novaTarefa = document.createElement('article');
 
     novaTarefa.classList.add('task-card');
-    novaTarefa.dataset.status = 'todo';
+    novaTarefa.draggable = true;
+    novaTarefa.dataset.status = statusEscolhido;
 
     novaTarefa.innerHTML = `
         <div class="task-card-top">
@@ -127,19 +179,19 @@ formulario.addEventListener('submit', function (evento) {
 
     <h3></h3>
 
-    <p class="task-description">
-       Tarefa adicionada pelo formulário.
-    </p>
+     <p class="task-description"></p>
     
     `;
 
     novaTarefa.querySelector('h3').textContent = nomeTarefa;
+    novaTarefa.querySelector('.task-description').textContent = descricaoTarefa || 'Tarefa adicionada pelo formulário.';
 
-    listaafazer.appendChild(novaTarefa);
+    pegarLista(statusEscolhido).appendChild(novaTarefa);
 
     prepararTarefa(novaTarefa);
 
     campotarefa.value = '';
+    campodescricao.value = '';
     campotarefa.focus();
 
     atualizarcontadores();
@@ -152,11 +204,11 @@ const botoesAdicionar = document.querySelectorAll('.add-inline');
 botoesAdicionar.forEach(function (botao) {
     botao.addEventListener('click', function () {
         const coluna = botao.closest('.kanban-column');
-        colunaEscolhida = coluna.dataset.status;
+        statusEscolhido = coluna.dataset.status;
 
-        if (colunaEscolhida === 'progress') {
+        if (statusEscolhido === 'progress') {
             campotarefa.placeholder = 'Nova tarefa em andamento';
-        } else if (colunaEscolhida === 'done') {
+        } else if (statusEscolhido === 'done') {
             campotarefa.placeholder = 'Nova tarefa concluída';
         } else {
             campotarefa.placeholder = 'Nova tarefa a fazer';
