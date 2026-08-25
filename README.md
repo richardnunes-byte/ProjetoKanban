@@ -54,3 +54,5 @@ Kevin Steff Conrado: desenvolvimento da lógica da aplicação em JavaScript e c
 Todos os integrantes devem participar do desenvolvimento e possuir registros próprios de commits e Pull Requests.
 
 s dados reais da equipe e preencha os nomes dos integrantes antes de entregar o projeto.
+
+Nosso conflito foi o problema que teve na branch do richard. Muito obrigado pela ajuda professor!
