@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Kanban JRK</title>
+</head>
+<body>
+    <main class="app-shell">
+        <header class="topbar">
+            <h1 id="page-title">Kanban JRK</h1>
+            <p class="board-date">Quadro de tarefas</p>
+        </header>
+
+        <section class="board-toolbar" aria-label="Controles do quadro">
+            <form class="task-form" action="#" method="get">
+                <label class="sr-only" for="new-task">Nome da nova tarefa</label>
+                <input id="new-task" name="task" type="text" placeholder="O que precisa ser feito?" autocomplete="off">
+                <button class="add-button" type="submit">
+                    <span>+</span>
+                    Adicionar tarefa
+                </button>
+            </form>
+            <div class="board-total">6 tarefas</div>
+        </section>
+
+        <section class="kanban-board" aria-label="Quadro de tarefas">
+            <article class="kanban-column todo-column" data-status="todo">
+                <div class="column-heading">
+                    <div class="column-title">
+                        <span class="status-dot"></span>
+                        <h2>A fazer</h2>
+                        <span class="task-count">2</span>
+                    </div>
+                </div>
+                <div class="task-list">
+                    <article class="task-card" draggable="true" data-status="todo">
+                        <div class="task-card-top">
+                            <span class="priority high">Alta</span>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Definir objetivos do próximo trimestre</h3>
+                        <p class="task-description">Alinhar metas com os líderes de cada área.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-25">25 ago</time>
+                            <span class="tag tag-blue">Planejamento</span>
+                            <span class="mini-avatar green">MC</span>
+                        </div>
+                    </article>
+                    <article class="task-card" draggable="true" data-status="todo">
+                        <div class="task-card-top">
+                            <span class="priority medium">Média</span>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Revisar apresentação comercial</h3>
+                        <p class="task-description">Atualizar números e os cases do semestre.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-28">28 ago</time>
+                            <span class="tag tag-yellow">Comercial</span>
+                            <span class="mini-avatar orange">RL</span>
+                        </div>
+                    </article>
+                </div>
+                <button class="add-inline" type="button">
+                    <span>+</span>
+                    Adicionar tarefa
+                </button>
+            </article>
+            <article class="kanban-column progress-column" data-status="progress">
+                <div class="column-heading">
+                    <div class="column-title">
+                        <span class="status-dot"></span>
+                        <h2>Em andamento</h2>
+                        <span class="task-count">2</span>
+                    </div>
+                </div>
+                <div class="task-list">
+                    <article class="task-card" draggable="true" data-status="progress">
+                        <div class="task-card-top">
+                            <span class="priority high">Alta</span>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Preparar relatório mensal</h3>
+                        <p class="task-description">Consolidar indicadores e aprendizados de julho.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-22">Hoje</time>
+                            <span class="tag tag-purple">Operações</span>
+                            <span class="mini-avatar purple">AS</span>
+                        </div>
+                    </article>
+                    <article class="task-card" draggable="true" data-status="progress">
+                        <div class="task-card-top">
+                            <span class="priority low">Baixa</span>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Mapear fluxo de atendimento</h3>
+                        <p class="task-description">Identificar pontos de melhoria na jornada.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-30">30 ago</time>
+                            <span class="tag tag-pink">Produto</span>
+                            <span class="mini-avatar blue">DV</span>
+                        </div>
+                    </article>
+                </div>
+                <button class="add-inline" type="button">
+                    <span>+</span>
+                    Adicionar tarefa
+                </button>
+            </article>
+            <article class="kanban-column done-column" data-status="done">
+                <div class="column-heading">
+                    <div class="column-title">
+                        <span class="status-dot"></span>
+                        <h2>Concluídas</h2>
+                        <span class="task-count">2</span>
+                    </div>
+                </div>
+                <div class="task-list">
+                    <article class="task-card completed-task" draggable="true" data-status="done">
+                        <div class="task-card-top">
+                            <label class="check-wrap">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                <span>Concluída</span>
+                            </label>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Enviar pesquisa de clima</h3>
+                        <p class="task-description">Pesquisa enviada para toda a equipe.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-20">20 ago</time>
+                            <span class="tag tag-green">Pessoas</span>
+                            <span class="mini-avatar green">MC</span>
+                        </div>
+                    </article>
+                    <article class="task-card completed-task" draggable="true" data-status="done">
+                        <div class="task-card-top">
+                            <label class="check-wrap">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                                <span>Concluída</span>
+                            </label>
+                            <button class="card-menu" type="button" aria-label="Opções da tarefa">•••</button>
+                        </div>
+                        <h3>Publicar calendário de conteúdo</h3>
+                        <p class="task-description">Calendário aprovado e compartilhado.</p>
+                        <div class="task-footer">
+                            <time datetime="2026-08-19">19 ago</time>
+                            <span class="tag tag-blue">Marketing</span>
+                            <span class="mini-avatar orange">RL</span>
+                        </div>
+                    </article>
+                </div>
+                <button class="add-inline" type="button">
+                    <span>+</span>
+                    Adicionar tarefa
+                </button>
+            </article>
+        </section>
+        <p class="empty-state" role="status">Ainda não há tarefas cadastradas.</p>
+    </main>
+</body>
+</html>

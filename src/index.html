@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css\style.css">
     <title>Kanban JRK</title>
 </head>
 <body>
     <main class="app-shell">
         <header class="topbar">
-            <h1 id="page-title">Kanban JRK</h1>
+            <div class="brand">
+                <img src="assets/logo.png" alt="Logo Kanban JRK" class="brand-logo">
+                <h1 id="page-title">Kanban JRK</h1>
+            </div>
             <p class="board-date">Quadro de tarefas</p>
         </header>
 
@@ -17,6 +20,8 @@
             <form class="task-form" action="#" method="get">
                 <label class="sr-only" for="new-task">Nome da nova tarefa</label>
                 <input id="new-task" name="task" type="text" placeholder="O que precisa ser feito?" autocomplete="off">
+                <label class="sr-only" for="task-description">Descrição da nova tarefa</label>
+                <textarea id="task-description" name="description" placeholder="Descrição da tarefa (opcional)" rows="1"></textarea>
                 <button class="add-button" type="submit">
                     <span>+</span>
                     Adicionar tarefa
@@ -161,6 +166,6 @@
         <p class="empty-state" role="status">Ainda não há tarefas cadastradas.</p>
     </main>
     
-    <script src="app.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
